@@ -1,0 +1,51 @@
+#!/bin/bash
+
+greenColour="\e[0;32m\033[1m"
+endColour="\033[0m\e[0m"
+redColour="\e[0;31m\033[1m"
+
+removeAllFunction ()
+{
+  rm -rf -v ./*
+  echo -e "\n${redColour}[*]${endColour} Se ha eliminado todo el contenido del directorio actual"
+}
+
+speedtestForFunction ()
+{
+  clear
+  echo -e "${greenColour}[*]${endColour}Iniciando prueba de velocidad"
+  speedtest
+}
+
+updateSysten ()
+{
+  clear
+  if [[ "$(id -u)" = "0" ]]; then
+    echo -e "${greenColour}[*]${endColour} Actualizando sistema"
+    sudo pacman -Syy && sudo pacman -Syu
+  else
+    echo -e "${redColour}[*] Necesitas permisos de administrador"
+  fi
+}
+
+if [[ $1 = -v ]]; then #----> Version Show
+  echo "Version 1.0"
+
+elif [[ $1 = -s ]]; then #----> Internet Speed Test
+  speedtestForFunction
+
+elif [[ $1 = -u ]]; then #----> Update and Upgrade System
+  updateSysten
+
+elif [[ $1 = -rm! ]]; then #----> Remove all #----> Remove Everything From This Directory
+  removeAllFunction
+
+else
+  echo -e "${yellowColour}cto 1.0.0${endColour}"
+  echo -e "\nUSAGE:"
+  echo -e "      cto [OPTIONS]\n"
+  echo -e "OPTIONS:"
+  echo -e "      -s      Internet Speed Test"
+  echo -e "      -u      Update and Upgrade System"
+  echo -e "      -rm!    Remove All in this folder"
+fi
