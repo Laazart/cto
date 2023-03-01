@@ -28,6 +28,19 @@ updateSysten ()
   fi
 }
 
+virtualManager ()
+{
+  clear
+  if [[ "$(id -u)" = "0" ]]; then
+    echo -e "${greenColour}[*]${endColour} Iniciando Virt Manager" && sleep 1 && clear
+    sudo virsh net-start default > /dev/null 2>&1
+    sudo virt-manager > /dev/null 2>&1
+    figlet "Virt Manager" | lolcat
+  else
+    echo -e "${redColour}[*] Necesitas permisos de administrador"
+  fi
+}
+
 if [[ $1 = -v ]]; then #----> Version Show
   echo "Version 1.0"
 
@@ -39,7 +52,8 @@ elif [[ $1 = -u ]]; then #----> Update and Upgrade System
 
 elif [[ $1 = -rm! ]]; then #----> Remove all #----> Remove Everything From This Directory
   removeAllFunction
-
+elif [[ $1 = -vm ]]; then
+  virtualManager
 else
   echo -e "${yellowColour}cto 1.0.0${endColour}"
   echo -e "\nUSAGE:"
@@ -47,5 +61,6 @@ else
   echo -e "OPTIONS:"
   echo -e "      -s      Internet Speed Test"
   echo -e "      -u      Update and Upgrade System"
+  echo -e "      -vm     Run Virt Manager"
   echo -e "      -rm!    Remove All in this folder"
 fi
